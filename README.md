@@ -4,7 +4,7 @@ This repository contains the `clipq` package, which provides an easy-to-use inte
 
 ## Appreciation
 
-- Christon in LAION for the idea
+- [Christopher in LAION for the idea](https://discord.com/channels/823813159592001537/824374369182416994/1158057178582753342)
 - Thanks to OpenAI for the CLIP model.
 - Inspiration drawn from various CLIP-related projects in the community.
 
