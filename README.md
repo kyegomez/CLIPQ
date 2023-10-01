@@ -1,6 +1,6 @@
-# CLIP Quadrant Experiment with `clipq`
+# ClipQ
 
-This repository contains the `clipq` package, which provides an easy-to-use interface for experimenting with OpenAI's CLIP model by encoding image quadrants. By splitting images into quadrants and encoding each with CLIP, we can explore how the model perceives various parts of an image.
+An easy-to-use interface for experimenting with OpenAI's CLIP model by encoding image quadrants. By splitting images into quadrants and encoding each with CLIP, we can explore how the model perceives various parts of an image.
 
 ## Appreciation
 
