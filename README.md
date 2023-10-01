@@ -2,6 +2,13 @@
 
 This repository contains the `clipq` package, which provides an easy-to-use interface for experimenting with OpenAI's CLIP model by encoding image quadrants. By splitting images into quadrants and encoding each with CLIP, we can explore how the model perceives various parts of an image.
 
+## Appreciation
+
+- Thanks to OpenAI for the CLIP model.
+- Inspiration drawn from various CLIP-related projects in the community.
+
+
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -30,7 +37,7 @@ from clipq import CLIPQ
 experiment = CLIPQ()
 
 # Run the experiment on a random image from the internet
-vectors = experiment.run_experiment()
+vectors = experiment.run()
 
 # Print the obtained vectors
 print(vectors)
@@ -48,9 +55,3 @@ print(vectors)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Thanks to OpenAI for the CLIP model.
-- Inspiration drawn from various CLIP-related projects in the community.
-

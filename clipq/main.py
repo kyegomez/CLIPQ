@@ -44,12 +44,12 @@ class CLIPQ:
             quadrant_vectors.append(outputs.image_embeds.squeeze().detach().numpy())
         return quadrant_vectors
 
-    def run_experiment(self):
+    def run(self):
         image = self.fetch_random_image()
         vectors = self.get_quadrant_vectors(image)
         return vectors
 
 # Using the class
 experiment = CLIPQ()
-vectors = experiment.run_experiment()
+vectors = experiment.run()
 print(vectors)  # this will print the vectors for each quadrant
