@@ -58,4 +58,13 @@ print(vectors)
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 # Todo
-- Make captions using any of the following: openclip G, OpenCLIP G or siglip L or EVA G
+- [ ] Make captions using any of the following: openclip G, OpenCLIP G or siglip L or EVA G
+- [ ] Image Division: Ability to split an image into quadrants (2x2). Extended ability to split an image into 9 equal parts (3x3).
+- [ ] Vector Representation: Generation of a CLIP vector for the entire image and individual CLIP vectors for each split part or quadrant.
+- [ ] Sub-clip Concerns: Identification of hard chunking issues with standard quadrant splitting.
+- [ ] Noise Reduction: Introduction of non-standard shapes (possibly polygons) for image parts to reduce noise. Aim to tackle interlacing issues during upscaling.
+- [ ] Upscaling: Address potential tiling issues during the upscaling process.
+- [ ] Flexibility in Sub-clipping: Configurable options to choose between 2x2 or 3x3 image division.
+- [ ] Output captions of all 4 quadrants
+
+- [ ] Prior Training: Training mechanism to use the data of quadrant CLIP vectors.
