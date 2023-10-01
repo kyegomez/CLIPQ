@@ -46,7 +46,11 @@ class CLIPQ:
     
     
     """
-    def __init__(self, model_name="openai/clip-vit-base-patch16", query_text="a photo"):
+    def __init__(
+        self,
+        model_name: str = "openai/clip-vit-base-patch16",
+        query_text: str = "A photo "
+    ):
         self.model = CLIPModel.from_pretrained(model_name)
         self.processor = CLIPProcessor.from_pretrained(model_name)
         self.query_text = query_text
@@ -54,41 +58,89 @@ class CLIPQ:
     def fetch_image_from_url(self, url='https://picsum.photos/800'):
         response = requests.get(url)
         if response.status_code != 200:
-            raise Exception("Failed to fetch an image.")
+            raise Exception("Failed to fetch an image")
         image = Image.open(BytesIO(response.content))
         return image
-
+    
     def load_image_from_path(self, path):
         return Image.open(path)
-
-    def split_image(self, image, h_splits=2, v_splits=2):
+    
+    def split_image(
+        self,
+        image,
+        h_splits: int = 2,
+        v_splits: int = 2
+    ):
         width, height = image.size
         w_step, h_step = width // h_splits, height // v_splits
         slices = []
+
         for i in range(v_splits):
             for j in range(h_splits):
-                slice = image.crop((j * w_step, i * h_step, (j + 1) * w_step, (i + 1) * h_step))
+                slice = image.crop(
+                    (
+                        j * w_step,
+                        i * h_step,
+                        (j + 1) * w_step,
+                        (i + 1) * h_step
+                    )
+                )
                 slices.append(slice)
         return slices
-
-    def get_vectors(self, image, h_splits=2, v_splits=2):
-        slices = self.split_image(image, h_splits, v_splits)
+    
+    def get_vectors(
+        self,
+        image,
+        h_splits: int = 2,
+        v_splits: int = 2,
+    ):
+        slices = self.split_image(
+            image,
+            h_splits,
+            v_splits
+        )
         vectors = []
+        
         for slice in slices:
-            inputs = self.processor(text=self.query_text, images=slice, return_tensors="pt", padding=True)
+            inputs = self.processor(
+                text=self.query_text,
+                images=slice,
+                return_tensors="pt",
+                padding=True
+            )
             outputs = self.model(**inputs)
-            vectors.append(outputs.image_embeds.squeeze().detach().numpy())
+            vectors.append(
+                outputs.image_embeds.squeeze().detach().numpy()
+            )
         return vectors
 
-    def run_from_url(self, url='https://picsum.photos/800', h_splits=2, v_splits=2):
+    def run_from_url(
+        self,
+        url: str = 'https://picsum.photos/800',
+        h_splits: int = 2,
+        v_splits: int = 2
+    ):
         image = self.fetch_image_from_url(url)
-        return self.get_vectors(image, h_splits, v_splits)
-
-    def run_from_path(self, path, h_splits=2, v_splits=2):
+        return self.get_vectors(
+            image,
+            h_splits,
+            v_splits
+        )
+    
+    def run_from_path(
+        self,
+        path: str = None,
+        h_splits: int = 2,
+        v_splits: int = 2
+    ):
         image = self.load_image_from_path(path)
-        return self.get_vectors(image, h_splits, v_splits)
+        return self.get_vectors(
+            image,
+            h_splits,
+            v_splits
+        )
 
-# Using the class
-experiment = CLIPQ(query_text="a landscape")
-vectors = experiment.run_from_url(h_splits=3, v_splits=3)  # This will split the image into 9 parts
+#usage
+test = CLIPQ(query_text="A photo of a cat")
+vectors = test.run_from_url(h_splits=3, v_splits=3)
 print(vectors)

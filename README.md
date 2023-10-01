@@ -56,3 +56,6 @@ print(vectors)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+# Todo
+- Make captions using any of the following: openclip G, OpenCLIP G or siglip L or EVA G
