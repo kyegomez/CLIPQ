@@ -32,15 +32,15 @@ pip install clipq
 Here's a brief example to get you started:
 
 ```python
-from clipq import CLIPQ
+from clipq.main import CLIPQ
 
-# Initialize the experiment
-experiment = CLIPQ()
+#init
+test = CLIPQ(query_text="A photo of a cat")
 
-# Run the experiment on a random image from the internet
-vectors = experiment.run()
+#input, url => embed
+vectors = test.run_from_url(url="https://picsum.photos/800", h_splits=3, v_splits=3)
 
-# Print the obtained vectors
+#print
 print(vectors)
 ```
 

@@ -43,8 +43,23 @@ class CLIPQ:
     run_from_path(path, h_splits, v_splits)
         Runs the model on the image loaded from the given path.
     
+    Usage for simple split
+    test = CLIPQ(query_text="A photo of a cat")
+    vectors = test.run_from_url(h_splits=3, v_splits=3)
+    print(vectors)
+
+
+
+    Usage for captions
+    test = CLIPQ()
+
+    candidates = ["a serene landscape", "a group of people", "an animal in the wild", "a building", "vehicles on the road"]
+
     
-    
+    caption_result = experiment.get_and_concat_captions(experiment.fetch_image_from_url(), candidates)
+    print(caption_result)
+
+        
     """
     def __init__(
         self,
@@ -139,8 +154,55 @@ class CLIPQ:
             h_splits,
             v_splits
         )
+    
+    def get_captions(
+        self,
+        image,
+        candidate_captions
+    ):
+        inputs_image = self.processor(
+            text=[self.query_text],
+            images=image,
+            return_tensors="pt",
+            padding=True
+        )
+        
+        inputs_text = self.processor(
+            text=candidate_captions,
+            return_tensors="pt",
+            padding=True
+        )
 
-#usage
+        image_embeds = self.model(**inputs_image).image_embeds
+        text_embeds = self.model(**inputs_text).text_embeds
+
+        #cal similarity between image and text
+        similarities = (image_embeds @ text_embeds.T).squeeze(0)
+        best_caption_index = similarities.argmax().item()
+
+        return candidate_captions[best_caption_index]
+    
+    def get_and_concat_captions(
+        self,
+        image,
+        candidate_captions,
+        h_splits=2,
+        v_splits=2
+    ):
+        slices = self.split_image(
+            image,
+            h_splits,
+            v_splits
+        )
+        captions = [self.get_captions(
+            slice,
+            candidate_captions
+        ) for slice in slices]
+        concated_captions = ''.join(captions)
+        return concated_captions
+    
+
+# Usage
 test = CLIPQ(query_text="A photo of a cat")
-vectors = test.run_from_url(h_splits=3, v_splits=3)
+vectors = test.run_from_url(url="https://picsum.photos/800", h_splits=3, v_splits=3)
 print(vectors)
