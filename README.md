@@ -45,7 +45,7 @@ print(vectors)
 ```
 
 # Documentation
-- [Documentation is here, in the docs folder](docs/)
+- [Documentation is here, in the docs folder](docs/README.md)
 
 
 ## Contributing
