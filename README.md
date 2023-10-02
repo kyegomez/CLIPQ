@@ -44,6 +44,10 @@ vectors = test.run_from_url(url="https://picsum.photos/800", h_splits=3, v_split
 print(vectors)
 ```
 
+# Documentation
+- [Documentation is here, in the docs folder](docs/)
+
+
 ## Contributing
 
 1. Fork the repository on GitHub.
