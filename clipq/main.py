@@ -1,8 +1,10 @@
-import torch
-from transformers import CLIPProcessor, CLIPModel
-from PIL import Image
-import requests
 from io import BytesIO
+
+import requests
+import torch
+from PIL import Image
+from transformers import CLIPModel, CLIPProcessor
+from torchvision.transforms import GaussianBlur
 
 class CLIPQ:
     """
@@ -141,6 +143,44 @@ class CLIPQ:
             h_splits,
             v_splits
         )
+    
+    def check_hard_chunking(
+        self,
+        quadrants
+    ):
+        #variance across boundaries
+        variances = []
+        for quadrant in quadrants:
+            edge_pixels = torch.cat([
+                quadrant[0, 1],
+                quadrant[-1, :],
+            ])
+            variances.append(
+                torch.var(edge_pixels).item()
+            )
+        return variances
+    
+    def embed_whole_image(
+        self,
+        image
+    ):
+        """Embed the entire image"""
+        inputs = self.clip_processor(
+            images=image,
+            return_tensors="pt",   
+        )
+        with torch.no_grad():
+            outputs = self.clip_model(**inputs)
+            return outputs.image_embeds.squeeze()
+    
+    def apply_noise_reduction(
+        self,
+        image,
+        kernel_size: int = 5
+    ):
+        """Implement an upscaling method to upscale the image and tiling issues"""
+        blur = GaussianBlur(kernel_size)
+        return blur(image)
     
     def run_from_path(
         self,
