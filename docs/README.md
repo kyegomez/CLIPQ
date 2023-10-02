@@ -136,11 +136,7 @@ vectors = clipq.run_from_url(url="https://example.com/image.jpg", h_splits=3, v_
 
 ### `run_from_path(self, path: str = None, h_splits: int = 2, v_splits: int =
 
-You:
 
-KEEP GOING DO NOT STOP
-
-Athena:
 
 ### `run_from_path(self, path: str = None, h_splits: int = 2, v_splits: int = 2)`
 
@@ -271,12 +267,6 @@ blurred_image = clipq.apply_noise_reduction(image, kernel_size=7)
 
 
 
-You:
-
-KEEP GOING DO NOT STOP
-
-Athena:
-
 Usage Examples
 --------------
 
@@ -346,11 +336,8 @@ print(vectors)
 
 
 
-You:
 
-Keep going do not stop
 
-Athena:
 
 ### Example 6: Get Captions
 
@@ -420,11 +407,8 @@ print(image_embeds)
 
 
 
-You:
 
-Keep going do not stop
 
-Athena:
 
 ### Example 11: Get and Concat Captions from Image Path
 
