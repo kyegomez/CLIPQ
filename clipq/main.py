@@ -73,6 +73,7 @@ class CLIPQ:
         self.query_text = query_text
 
     def fetch_image_from_url(self, url='https://picsum.photos/800'):
+        """Fetches an image from the given url"""
         response = requests.get(url)
         if response.status_code != 200:
             raise Exception("Failed to fetch an image")
@@ -80,6 +81,7 @@ class CLIPQ:
         return image
     
     def load_image_from_path(self, path):
+        """Loads an image from the given path"""
         return Image.open(path)
     
     def split_image(
@@ -88,6 +90,7 @@ class CLIPQ:
         h_splits: int = 2,
         v_splits: int = 2
     ):
+        """Splits the given image into h_splits x v_splits parts"""
         width, height = image.size
         w_step, h_step = width // h_splits, height // v_splits
         slices = []
@@ -111,6 +114,7 @@ class CLIPQ:
         h_splits: int = 2,
         v_splits: int = 2,
     ):
+        """Gets the vectors for the given image"""
         slices = self.split_image(
             image,
             h_splits,
@@ -137,6 +141,7 @@ class CLIPQ:
         h_splits: int = 2,
         v_splits: int = 2
     ):
+        """Runs the model on the image fetched from the given url"""
         image = self.fetch_image_from_url(url)
         return self.get_vectors(
             image,
@@ -148,7 +153,7 @@ class CLIPQ:
         self,
         quadrants
     ):
-        #variance across boundaries
+        """Check if the chunking is hard"""
         variances = []
         for quadrant in quadrants:
             edge_pixels = torch.cat([
@@ -188,6 +193,7 @@ class CLIPQ:
         h_splits: int = 2,
         v_splits: int = 2
     ):
+        """Runs the model on the image loaded from the given path"""
         image = self.load_image_from_path(path)
         return self.get_vectors(
             image,
@@ -200,6 +206,7 @@ class CLIPQ:
         image,
         candidate_captions
     ):
+        """Get the best caption for the given image"""
         inputs_image = self.processor(
             text=[self.query_text],
             images=image,
@@ -229,6 +236,7 @@ class CLIPQ:
         h_splits=2,
         v_splits=2
     ):
+        """Get the best caption for the given image"""
         slices = self.split_image(
             image,
             h_splits,
@@ -241,4 +249,3 @@ class CLIPQ:
         concated_captions = ''.join(captions)
         return concated_captions
     
-
