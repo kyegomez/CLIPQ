@@ -3,9 +3,11 @@ from io import BytesIO
 import requests
 import torch
 from PIL import Image
-from transformers import CLIPModel, CLIPProcessor
 from torchvision.transforms import GaussianBlur
+from transformers import CLIPModel, CLIPProcessor
 
+
+#clipq/main.py
 class CLIPQ:
     """
     ClipQ
@@ -72,7 +74,10 @@ class CLIPQ:
         self.processor = CLIPProcessor.from_pretrained(model_name)
         self.query_text = query_text
 
-    def fetch_image_from_url(self, url='https://picsum.photos/800'):
+    def fetch_image_from_url(
+        self, 
+        url: str = 'https://picsum.photos/800'
+    ):
         """Fetches an image from the given url"""
         response = requests.get(url)
         if response.status_code != 200:
