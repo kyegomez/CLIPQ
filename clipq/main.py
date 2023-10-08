@@ -144,8 +144,8 @@ class CLIPQ:
 
     def embed_whole_image(self, image):
         """Embed the entire image"""
-        inputs = self.clip_processor(
-            images=image,
+        inputs = self.model(
+            image,
             return_tensors="pt",
         )
         with torch.no_grad():
