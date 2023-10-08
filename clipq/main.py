@@ -144,12 +144,12 @@ class CLIPQ:
 
     def embed_whole_image(self, image):
         """Embed the entire image"""
-        inputs = self.model(
+        inputs = self.processor(
             image,
             return_tensors="pt",
         )
         with torch.no_grad():
-            outputs = self.clip_model(**inputs)
+            outputs = self.model(**inputs)
             return outputs.image_embeds.squeeze()
 
     def apply_noise_reduction(self, image, kernel_size: int = 5):
@@ -165,17 +165,26 @@ class CLIPQ:
     def get_captions(self, image, candidate_captions):
         """Get the best caption for the given image"""
         inputs_image = self.processor(
-            text=[self.query_text], images=image, return_tensors="pt", padding=True
+            images=image,
+            return_tensors="pt",
         )
 
         inputs_text = self.processor(
-            text=candidate_captions, return_tensors="pt", padding=True
+            text=candidate_captions,
+            images=inputs_image.pixel_values[0],  # Fix the argument name
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
         )
 
-        image_embeds = self.model(**inputs_image).image_embeds
-        text_embeds = self.model(**inputs_text).text_embeds
+        image_embeds = self.model(
+            pixel_values=inputs_image.pixel_values[0]
+        ).image_embeds
+        text_embeds = self.model(
+            input_ids=inputs_text.input_ids, attention_mask=inputs_text.attention_mask
+        ).text_embeds
 
-        # cal similarity between image and text
+        # Calculate similarity between image and text
         similarities = (image_embeds @ text_embeds.T).squeeze(0)
         best_caption_index = similarities.argmax().item()
 
