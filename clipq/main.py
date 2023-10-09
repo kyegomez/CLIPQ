@@ -75,7 +75,7 @@ class CLIPQ:
         self.processor = CLIPProcessor.from_pretrained(model_name)
         self.query_text = query_text
 
-    def fetch_image_from_url(self, url: str = "https://picsum.photos/800"):
+    def fetch_image_from_url(self, url = "https://picsum.photos/800"):
         """Fetches an image from the given url"""
         response = requests.get(url)
         if response.status_code != 200:
